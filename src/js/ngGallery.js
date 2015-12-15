@@ -34,11 +34,12 @@ angular.module('jkuri.gallery', [])
 	'</div>' +
 	'<div class="ng-gallery-content" ng-show="opened">' +
 	'  <div class="uil-ring-css" ng-show="loading"><div></div></div>' + 
+	'  <a class="trash-popup" ng-click="trash()"><i class="fa fa-trash"></i></a>' +
 	'  <a class="close-popup" ng-click="closeGallery()"><i class="fa fa-close"></i></a>' +
 	'  <a class="nav-left" ng-click="prevImage()"><i class="fa fa-angle-left"></i></a>' +
 	'  <img ng-src="{{ img }}" ng-click="nextImage()" ng-show="!loading" class="effect" />' +
 	'  <a class="nav-right" ng-click="nextImage()"><i class="fa fa-angle-right"></i></a>' +
-	'  <span class="info-text">{{ index + 1 }}/{{ images.length }} - {{ description }}</span>' +
+	'  <span class="info-text">{{ index + 1 }}/{{ images.length }}</span>' +
 	'  <div class="ng-thumbnails-wrapper">' +
 	'    <div class="ng-thumbnails slide-left">' +
 	'      <div ng-repeat="i in images">' + 
@@ -53,7 +54,8 @@ angular.module('jkuri.gallery', [])
 		restrict: 'EA',
 		scope: {
 			images: '=',
-			thumbsNum: '@'
+			thumbsNum: '@',
+			onDelete : '&',
 		},
 		templateUrl: function(element, attrs) {
         		return attrs.templateUrl || defaults.templateUrl;
@@ -104,7 +106,12 @@ angular.module('jkuri.gallery', [])
 				});
 				scope.description = scope.images[i].description || '';
 			};
-
+			
+			scope.trash = function() {
+				scope.closeGallery();
+				scope.onDelete({id: scope.images[scope.index].id});
+			}
+			
 			scope.changeImage = function (i) {
 				scope.index = i;
 				loadImage(scope.index).then(function(resp) {
@@ -124,7 +131,7 @@ angular.module('jkuri.gallery', [])
 			scope.prevImage = function () {
 				scope.index -= 1;
 				if (scope.index < 0) {
-					scope.index = scope.images.length - 1;
+					scope.index = scope.images.length;
 				}
 				showImage(scope.index);
 			};

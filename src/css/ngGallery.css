@@ -45,6 +45,18 @@ img.ng-thumb {
   right: 0;
 }
 
+.ng-gallery-content > a.trash-popup {
+  font-size: 42px;
+  float: left;
+  color: #fff;
+  text-decoration: none;
+  margin: 0 0 0 30px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 0;
+}
+
 .ng-gallery-content > a.nav-left, .ng-gallery-content > a.nav-right {
   color: #fff;
   text-decoration: none;
